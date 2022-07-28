@@ -11,5 +11,7 @@ namespace BeezupApi.Services
         string? CsvToJson(string input, string delimiter);
 
         string ConvertCsvToXml(string csv);
+
+        public string ReplaceAsciiCharacter(string text);
     }
 }

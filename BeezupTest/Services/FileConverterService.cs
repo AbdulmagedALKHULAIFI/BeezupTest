@@ -36,16 +36,16 @@ namespace BeezupApi.Services
             throw new NotImplementedException();
         }
 
-        public string? CsvToJson(string input, string delimiter)
+        public string? CsvToJson(string csv, string delimiter)
         {
-            using (TextFieldParser parser = new TextFieldParser(new MemoryStream(Encoding.UTF8.GetBytes(input))))
+            using (TextFieldParser parser = new TextFieldParser(new MemoryStream(Encoding.UTF8.GetBytes(csv))))
             {
                 parser.Delimiters = new string[] { delimiter };
                 string[]? headers = parser.ReadFields();
                 if (headers == null) return null;
                 string[]? row;
                 string comma = "";
-                System.Text.StringBuilder sb = new System.Text.StringBuilder((int)(input.Length * 1.1));
+                System.Text.StringBuilder sb = new System.Text.StringBuilder((int)(csv.Length * 1.1));
                 sb.Append("[");
                 while ((row = parser.ReadFields()) != null)
                 {
@@ -66,18 +66,21 @@ namespace BeezupApi.Services
         {
             StringBuilder sb = new StringBuilder();
 
-            using (var p = ChoCSVReader.LoadText(csv)
-                .WithFirstLineHeader()
-                )
+            using (var p = ChoCSVReader.LoadText(csv).WithFirstLineHeader())
             {
-                using (var w = new ChoXmlWriter(sb)
-                    .Configure(c => c.RootName = "root")
-                    .Configure(c => c.NodeName = "row")
-                    )
+                using (var w = new ChoXmlWriter(sb).Configure(c => c.RootName = "root").Configure(c => c.NodeName = "row"))
                     w.Write(p);
             }
 
             return sb.ToString();
-        } 
+        }
+
+        public string ReplaceAsciiCharacter(string text)
+        {
+            text = text.Replace("%2F", "/");
+            text = text.Replace("%3A", ":");
+
+            return text;
+        }
     }
 }
