@@ -52,22 +52,5 @@ namespace BeezupTest.Controllers
 
             return json;
         }
-
-
-
-        //Working example 
-
-        //client.BaseAddress = new Uri("https://people.sc.fsu.edu/~jburkardt/data/csv/");
-        //var response = await client.GetAsync("oscar_age_female.csv");
-
-        //client.BaseAddress = new Uri("http://beezupcdn.blob.core.windows.net/recruitment/");
-        //var response = await client.GetAsync("bigfile.csv");
-
-        //            if (response.IsSuccessStatusCode)
-        //            {
-        //                var contentString = await response.Content.ReadAsStringAsync();
-        //}
-
-        //var json = FileConverterService.CsvToJson(contentString, ",");
     }
 }
