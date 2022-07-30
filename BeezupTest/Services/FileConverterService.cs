@@ -10,7 +10,7 @@ namespace BeezupApi.Services
     public class FileConverterService : IFileConverterService
     {
 
-        public async Task<object?> ConverterCsv(string csvUrl, string? separator, string outputType)
+        public async Task<string> ConverterCsv(string csvUrl, string? separator, string outputType)
         {
             object result = null;
             string resultString = string.Empty;
@@ -62,7 +62,7 @@ namespace BeezupApi.Services
             try
             {
                 json = ConvertCsvToJsonString(content, delimiter);
-                jsonObject = JsonConvert.DeserializeObject(json);
+                jsonObject = JsonConvert.DeserializeObject<object>(json);
             }
             catch (Exception ex)
             {

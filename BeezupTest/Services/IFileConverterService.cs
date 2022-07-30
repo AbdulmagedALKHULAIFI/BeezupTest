@@ -9,6 +9,6 @@ namespace BeezupApi.Services
 
 
         public Task<string> ConverterFileToXmlString(string csvUrl, string delimiter);
-        Task<object?> ConverterCsv(string csvUri, string? separator, string outputType);
+        Task<string> ConverterCsv(string csvUri, string? separator, string outputType);
     }
 }

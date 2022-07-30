@@ -1,0 +1,23 @@
+
+Link: 
+
+csv file : https://people.sc.fsu.edu/~jburkardt/data/csv/oscar_age_female.csv
+
+http://beezupcdn.blob.core.windows.net/recruitment/bigfile.csv
+
+https://www.stats.govt.nz/large-datasets/csv-files-for-download/
+
+https://jsonformatter.org/ 
+
+-------------------------------------------------
+
+Tasks:
+
+- Optimize the code to read the big file (csvHelper and stream)
+
+Done: 
+
+- Send dynamically the url of request
+- Return object instead of string
+- Define csvUri as parameter
+- Do bdd tests
