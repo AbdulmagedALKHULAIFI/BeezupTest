@@ -84,7 +84,8 @@ namespace BeezupApi.Services
                 if (headers == null) return null;
                 string[]? row;
                 string comma = "";
-                System.Text.StringBuilder sb = new System.Text.StringBuilder((int)(csv.Length * 1.1));
+                
+                StringBuilder sb = new StringBuilder((int)(csv.Length * 1.1));
                 sb.Append("[");
                 while ((row = parser.ReadFields()) != null)
                 {
