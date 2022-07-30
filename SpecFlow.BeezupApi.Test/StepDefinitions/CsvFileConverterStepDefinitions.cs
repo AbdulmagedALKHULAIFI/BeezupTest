@@ -54,7 +54,7 @@ namespace SpecFlow.BeezupApi.Test.StepDefinitions
             string csvContent = _scenarioContext.Get<string>("CsvContent");
             string delimiter = _scenarioContext.Get<string>("Delimiter");
 
-            _scenarioContext.Add("OutputJson", _fileConverterService.ConvertCsvToJson(csvContent, delimiter));
+            _scenarioContext.Add("OutputJson", _fileConverterService.ConvertCsvToJsonString(csvContent, delimiter));
             _scenarioContext.Add("OutputXml", _fileConverterService.ConvertCsvToXml(csvContent, delimiter));
         }
 

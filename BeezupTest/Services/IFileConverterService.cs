@@ -5,9 +5,10 @@ namespace BeezupApi.Services
     public interface IFileConverterService
     {
 
-        public Task<string> ConverterFileToJson(string csvUrl, string delimiter);
+        public Task<Object> ConverterFileToJson(string csvUrl, string delimiter);
 
 
-        public Task<string> ConverterFileToXml(string csvUrl, string delimiter);
+        public Task<string> ConverterFileToXmlString(string csvUrl, string delimiter);
+        Task<object?> ConverterCsv(string csvUri, string? separator, string outputType);
     }
 }

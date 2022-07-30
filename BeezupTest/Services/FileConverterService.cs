@@ -9,73 +9,83 @@ namespace BeezupApi.Services
 {
     public class FileConverterService : IFileConverterService
     {
-        public async Task<string> ConverterFileToJson(string csvUrl , string delimiter)
+
+        public async Task<object?> ConverterCsv(string csvUrl, string? separator, string outputType)
         {
+            object result = null;
+            string resultString = string.Empty;
+
             csvUrl = ReplaceAsciiCharacter(csvUrl);
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(csvUrl);
+                    var response = await client.GetAsync("");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var contentString = await response.Content.ReadAsStringAsync();
+
+                        if (outputType.ToLower() == "xml")
+                        {
+                            resultString = await ConverterFileToXmlString(contentString, separator);
+                        }
+                        else
+                        {
+                            resultString = ConvertCsvToJsonString(contentString, separator);
+                        }
+                    }
+                    else
+                    {
+                        //do your error logging and/or retry logic
+                    }
+
+                }
+            }catch(Exception ex)
+            {
+                return ex.Message;
+            }
+
+
+            return resultString;
+        }
+
+
+        public async Task<Object> ConverterFileToJson(string content , string delimiter)
+        {
 
             string json = string.Empty;
+            object? jsonObject = null;
+
             try
             {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(csvUrl);
-                    var response = await client.GetAsync("");
-
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var contentString = await response.Content.ReadAsStringAsync();
-
-                        json = ConvertCsvToJson(contentString, delimiter);
-                    }
-                    else
-                    {
-                        //do your error logging and/or retry logic
-                    }
-                }
+                json = ConvertCsvToJsonString(content, delimiter);
+                jsonObject = JsonConvert.DeserializeObject(json);
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
 
-            return json;
+            return jsonObject;
         }
 
-        public async Task<string> ConverterFileToXml(string csvUrl, string delimiter)
+        public async Task<string> ConverterFileToXmlString(string contentString, string delimiter)
         {
-            csvUrl = ReplaceAsciiCharacter(csvUrl);
+            StringBuilder sb = new StringBuilder();
 
-            string xml = string.Empty;
-            try
+            using (var p = ChoCSVReader.LoadText(contentString).WithFirstLineHeader().WithDelimiter(delimiter))
             {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(csvUrl);
-                    var response = await client.GetAsync("");
-
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var contentString = await response.Content.ReadAsStringAsync();
-
-                        xml = ConvertCsvToXml(contentString, delimiter);
-                    }
-                    else
-                    {
-                        //do your error logging and/or retry logic
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
+                using (var w = new ChoXmlWriter(sb).Configure(c => c.RootName = "root").Configure(c => c.NodeName = "row"))
+                    w.Write(p);
             }
 
-            return xml;
+            return sb.ToString();
         }
 
-        public string? ConvertCsvToJson(string csv, string delimiter)
+        public string? ConvertCsvToJsonString(string csv, string delimiter)
         {
             using (TextFieldParser parser = new TextFieldParser(new MemoryStream(Encoding.UTF8.GetBytes(csv))))
             {
@@ -100,19 +110,6 @@ namespace BeezupApi.Services
                 }
                 return sb.Append("]").ToString();
             }
-        }
-
-        public string ConvertCsvToXml(string csv, string delimiter)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            using (var p = ChoCSVReader.LoadText(csv).WithFirstLineHeader().WithDelimiter(delimiter))
-            {
-                using (var w = new ChoXmlWriter(sb).Configure(c => c.RootName = "root").Configure(c => c.NodeName = "row"))
-                    w.Write(p);
-            }
-
-            return sb.ToString();
         }
 
         public string ReplaceAsciiCharacter(string text)

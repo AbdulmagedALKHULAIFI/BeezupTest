@@ -19,20 +19,13 @@ namespace BeezupTest.Controllers
         }
 
         [HttpGet, Route("{csvUri}")]
-        public async Task<string> ConvertFile(string csvUri, string? separator = ",", string? outputType = "json")
+        public async Task<Object> ConvertFile(string csvUri, string? separator = ",", string? outputType = "json")
         {
-            string result = string.Empty;
-
+            //string result = string.Empty;
+            Object result = null;
             try
             {
-                if(outputType.ToLower() == "xml")
-                {
-                    result = await FileConverterService.ConverterFileToXml(csvUri, separator);
-                }
-                else
-                {
-                    result = await FileConverterService.ConverterFileToJson(csvUri, separator);
-                }
+                result = await FileConverterService.ConverterCsv(csvUri, separator, outputType);
             }
             catch (Exception ex)
             {
