@@ -19,30 +19,19 @@ namespace BeezupTest.Controllers
         }
 
         [HttpGet, Route("{csvUri}")]
-        public async Task<string> ReadFileAsync(string csvUri, string? separator = ",")
+        public async Task<string> ConvertFile(string csvUri, string? separator = ",", string? outputType = "json")
         {
-            csvUri = FileConverterService.ReplaceAsciiCharacter(csvUri);
+            string result = string.Empty;
 
-            string json = string.Empty;
             try
             {
-                using (var client = new HttpClient())
+                if(outputType.ToLower() == "xml")
                 {
-                    client.BaseAddress = new Uri(csvUri);
-                    var response = await client.GetAsync("");
-
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var contentString = await response.Content.ReadAsStringAsync();
-
-                        json = FileConverterService.CsvToJson(contentString, separator);
-                        var xml = FileConverterService.ConvertCsvToXml(contentString);
-                    }
-                    else
-                    {
-                        //do your error logging and/or retry logic
-                    }
+                    result = await FileConverterService.ConverterFileToXml(csvUri, separator);
+                }
+                else
+                {
+                    result = await FileConverterService.ConverterFileToJson(csvUri, separator);
                 }
             }
             catch (Exception ex)
@@ -50,7 +39,7 @@ namespace BeezupTest.Controllers
                 return ex.Message;
             }
 
-            return json;
+            return result;
         }
     }
 }
