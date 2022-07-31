@@ -55,7 +55,7 @@ namespace SpecFlow.BeezupApi.Test.StepDefinitions
             string delimiter = _scenarioContext.Get<string>("Delimiter");
 
             _scenarioContext.Add("OutputJson", _fileConverterService.ConvertCsvToJsonString(csvContent, delimiter));
-            _scenarioContext.Add("OutputXml", _fileConverterService.ConvertCsvToXml(csvContent, delimiter));
+            _scenarioContext.Add("OutputXml", _fileConverterService.ConverterFileToXmlString(csvContent, delimiter).Result);
         }
 
         [Then(@"Verify that the Csv is successfully converted to Json")]
@@ -83,11 +83,25 @@ namespace SpecFlow.BeezupApi.Test.StepDefinitions
         public void ThenVerifyThatTheCsvIsSuccessfullyConvertedToXml()
         {
             string outputXml = _scenarioContext.Get<string>("OutputXml");
+            var output = XDocument.Parse(outputXml);
 
-            XDocument expectedResult = new XDocument(new XElement("MainBody",
-                                          new XElement("level1",
-                                              new XElement("level2", "Demo text"),
-                                              new XElement("level2", "other text"))));
+            XDocument expectedResult = new XDocument(new XElement("root",
+                                          new XElement("row",
+                                              new XElement("sku", "s1324"),
+                                              new XElement("title", "My super product"),
+                                              new XElement("description", "My super product it’s the best of the market"),
+                                              new XElement("price", "1.21")
+                                              ),
+                                           new XElement("row",
+                                              new XElement("sku", "x5611"),
+                                              new XElement("title", "My second super product"),
+                                              new XElement("description", "My second super product it’s the best of the market"),
+                                              new XElement("price", "7.43")
+                                              )));
+
+
+            bool isSame = XNode.DeepEquals(output.Document, expectedResult.Document);
+            Assert.IsTrue(isSame);
         }
 
     }

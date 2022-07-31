@@ -1,11 +1,31 @@
 
 Link: 
 
+-------------------------------------------------
+
+TEST FILES 
+
+
 csv file : https://people.sc.fsu.edu/~jburkardt/data/csv/oscar_age_female.csv
+https%3A%2F%2Fpeople.sc.fsu.edu%2F~jburkardt%2Fdata%2Fcsv%2Foscar_age_female.csv
 
 http://beezupcdn.blob.core.windows.net/recruitment/bigfile.csv
 
+-----------------------
+
 https://www.stats.govt.nz/large-datasets/csv-files-for-download/
+
+
+1.5 mb
+https://www.stats.govt.nz/assets/Uploads/Business-operations-survey/Business-operations-survey-2021/Download-data/bos2021ModC.csv
+https:%2F%2Fwww.stats.govt.nz%2Fassets%2FUploads%2FBusiness-operations-survey%2FBusiness-operations-survey-2021%2FDownload-data%2Fbos2021ModC.csv
+
+
+6.3 MG
+https://www.stats.govt.nz/assets/Uploads/Annual-enterprise-survey/Annual-enterprise-survey-2021-financial-year-provisional/Download-data/annual-enterprise-survey-2021-financial-year-provisional-csv.csv
+
+https:%2F%2Fwww.stats.govt.nz%2Fassets%2FUploads%2FAnnual-enterprise-survey%2FAnnual-enterprise-survey-2021-financial-year-provisional%2FDownload-data%2Fannual-enterprise-survey-2021-financial-year-provisional-csv.csv
+
 
 https://jsonformatter.org/ 
 

@@ -19,22 +19,34 @@ namespace BeezupTest.Controllers
             FileConverterService = fileConverterService;
         }
 
-        [HttpGet, Route("{csvUri}")]
+        [HttpGet]
         public async Task<ActionResult> ConvertFile(string csvUri, string? separator = ",", string? outputType = "json")
         {
             string result = string.Empty;
             object jsonObject = null;
+            ContentResult formattedResult = new ContentResult();
             try
             {
                 result = await FileConverterService.ConverterCsv(csvUri, separator, outputType);
-                jsonObject = JsonConvert.DeserializeObject(result);
+
+                if (outputType.ToLower() == "xml")
+                {
+
+                    formattedResult = new ContentResult { Content = result, ContentType = "application/xml" , StatusCode = 200 };
+                }
+                else
+                {
+                    jsonObject = JsonConvert.DeserializeObject(result);
+
+                    formattedResult = new ContentResult { Content = result, ContentType = "application/json", StatusCode = 200 };
+                }
             }
             catch (Exception ex)
             {
-               
+                return new ContentResult { Content = "Internal server error", ContentType= "string", StatusCode = 400 };
             }
 
-            return new ContentResult { Content = result, ContentType = "application/json" }; 
+            return formattedResult;
         }
     }
 }
